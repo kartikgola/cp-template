@@ -24,7 +24,6 @@ public class CP {
     private static class Pair<T, K> {
         T key;
         K value;
-
         public Pair(T key, K value) {
             this.key = key;
             this.value = value;
@@ -33,9 +32,7 @@ public class CP {
 
 
     /* -----------------------------String Utilities--------------------------- */
-    private static boolean isPalindrome(String s) {
-        return isPalindrome(s, 0, s.length()-1);
-    }
+    private static boolean isPalindrome(String s) { return isPalindrome(s, 0, s.length()-1); }
 
     private static boolean isPalindrome(String s, int start, int end) {
         for (int i = start, j = end; i < j; ++i, --j)
@@ -63,20 +60,14 @@ public class CP {
 
     private static boolean isPalindrome(long number) {
         String str = Long.toString(number);
-        for (int i = 0, j = str.length() - 1; i <= j; ++i, --j) {
-            if (str.charAt(i) != str.charAt(j))
-                return false;
-        }
+        for (int i = 0, j = str.length() - 1; i <= j; ++i, --j)
+            if (str.charAt(i) != str.charAt(j)) return false;
         return true;
     }
 
-    private static long gcd(long a, long b) {
-        return a == 0 ? b : gcd(b % a, a);
-    }
+    private static long gcd(long a, long b) { return a == 0 ? b : gcd(b % a, a); }
 
-    private static long gcd(int a, int b) {
-        return a == 0 ? b : gcd(b % a, a);
-    }
+    private static long gcd(int a, int b) { return a == 0 ? b : gcd(b % a, a); }
 
 
     /* -----------------------------Graph Utilities---------------------------- */
@@ -102,32 +93,16 @@ public class CP {
             this.zeroIndexed = zeroIndexed;
         }
 
-        /**
-         * Get the total number of sets/groups present in this disjoint set
-         * @return int
-         */
         public int getTotalGroups() {
             return this.groups;
         }
 
-        /**
-         * Finds the parent of a vertex 'u'
-         * @param u : int vertex 'u'
-         * @return int
-         */
         public int find(int u) {
             if ( parent[u] < 0 )
                 return u;
             return parent[u] = find(parent[u]);
         }
 
-        /**
-         * Performs union of two vertices 'u' and 'v'
-         * Union is performed by weight
-         * @param u : first vertex
-         * @param v : second vertex
-         * @return true if union of 'u' and 'v' is successful (ie, their parents were different); false, otherwise
-         */
         public boolean union(int u, int v) {
             int pu = find(u);
             int pv = find(v);
@@ -177,7 +152,6 @@ public class CP {
             }
         }
 
-        // Cycle detection
         private boolean isCyclic(int u, boolean[] visited, boolean[] path) {
             if (!visited[u]) {
                 visited[u] = true;
@@ -204,7 +178,6 @@ public class CP {
             return false;
         }
 
-        // Tree detection
         public boolean isTree() {
             boolean[] visited = new boolean[size];
             boolean[] path = new boolean[size];
@@ -215,7 +188,6 @@ public class CP {
             return true;
         }
 
-        // Topological sort
         public int[] topologicalSort() {
             int[] indegree = new int[size];
             int[] ans = new int[size];
@@ -243,7 +215,6 @@ public class CP {
             return ans;
         }
 
-        // Dijkstra's algorithm
         public int[] dijkstra(int source) {
             int[] dist = new int[size];
             boolean[] visited = new boolean[size];
@@ -271,7 +242,6 @@ public class CP {
             return dist;
         }
 
-        // Bellman-ford's algorithm
         public int[] bellmanFord(int source) {
             int[] dist = new int[size];
             Arrays.fill(dist, Integer.MAX_VALUE);
@@ -294,7 +264,6 @@ public class CP {
             return dist;
         }
 
-        // Floyd-warshall's algorithm
         public int[][] floydWarshall() {
             int[][] dist = new int[size][size];
             for (int u = 0; u < size; ++u) {
@@ -317,7 +286,6 @@ public class CP {
             return dist;
         }
 
-        // Kruskal's algorithm
         public IntGraph kruskal() {
             IntGraph mst = new IntGraph(size, isDirected);
             edges.sort(Comparator.comparingInt(e -> e[2]));
@@ -330,7 +298,6 @@ public class CP {
             return mst;
         }
 
-        // Prim's algorithm
         public IntGraph prim() {
             boolean[] visited = new boolean[size];
             Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(e -> e[2]));
@@ -357,100 +324,60 @@ public class CP {
 
 
     /* -----------------------------Array Utilities--------------------------- */
-    private static int bisectLeft(List<Integer> arr, int value) {
-        if (arr.isEmpty())
-            return 0;
+    public static int bisectLeft(List<Integer> arr, int value) {
+        if (arr.isEmpty()) return 0;
         int l = 0, r = arr.size()-1;
         while (l < r) {
             int m = l + (r-l) / 2;
             if (arr.get(m) == value) {
-                while (m-1 > -1 && arr.get(m-1) == value)
-                    --m;
+                while (m-1 > -1 && arr.get(m-1) == value) --m;
                 return m;
-            } else if (arr.get(m) < value) {
-                l = m+1;
-            } else {
-                r = m-1;
-            }
-        }
-        if (arr.get(l) == value) {
-            while (arr.get(l) == value && l - 1 > -1 && arr.get(l-1) == value)
-                l--;
-            return l;
+            } else if (arr.get(m) < value) l = m+1;
+            else r = m-1;
         }
         return arr.get(l) < value ? l+1 : l;
     }
 
-    private static int bisectLeft(int[] arr, int value) {
-        if (arr.length == 0)
-            return 0;
+    public static int bisectLeft(int[] arr, int value) {
+        if (arr.length == 0) return 0;
         int l = 0, r = arr.length-1;
         while (l < r) {
             int m = l + (r-l) / 2;
             if (arr[m] == value) {
-                while (m-1 > -1 && arr[m-1] == value)
-                    --m;
+                while (m-1 > -1 && arr[m-1] == value) --m;
                 return m;
-            } else if (arr[m] < value) {
-                l = m+1;
-            } else {
-                r = m-1;
-            }
-        }
-        if (arr[l] == value) {
-            while (arr[l] == value && l - 1 > -1 && arr[l - 1] == value)
-                l--;
-            return l;
+            } else if (arr[m] < value) l = m+1;
+            else  r = m-1;
         }
         return arr[l] < value ? l+1 : l;
     }
 
-    private static int bisectRight(int[] arr, int value) {
-        if (arr.length == 0)
-            return 0;
+    public static int bisectRight(int[] arr, int value) {
+        if (arr.length == 0) return 0;
         int l = 0, r = arr.length-1;
         while (l < r) {
             int m = l + (r-l) / 2;
             if (arr[m] == value) {
-                while (m+1 < arr.length && arr[m+1] == value)
-                    ++m;
+                while (m+1 < arr.length && arr[m+1] == value) ++m;
                 return m+1;
-            } else if (arr[m] < value) {
-                l = m+1;
-            } else {
-                r = m-1;
-            }
+            } else if (arr[m] < value) l = m+1;
+            else r = m-1;
         }
-        if (arr[l] == value) {
-            while (arr[l] == value && l+1 < arr.length && arr[l+1] == value)
-                l++;
-            return l+1;
-        }
-        return arr[l] < value ? l+1 : l;
+        return arr[l] <= value ? l+1 : l;
     }
 
-    private static int bisectRight(List<Integer> arr, int value) {
-        if (arr.isEmpty())
-            return 0;
+    public static int bisectRight(List<Integer> arr, int value) {
+        if (arr.isEmpty())  return 0;
         int l = 0, r = arr.size()-1;
         while (l < r) {
             int m = l + (r-l) / 2;
             if (arr.get(m) == value) {
-                while (m+1 < arr.size() && arr.get(m+1) == value)
-                    ++m;
+                while (m+1 < arr.size() && arr.get(m+1) == value) ++m;
                 return m+1;
-            } else if (arr.get(m) < value) {
-                l = m+1;
-            } else {
-                r = m-1;
-            }
+            } else if (arr.get(m) < value) l = m+1;
+            else r = m-1;
         }
-        if (arr.get(l) == value) {
-            while (arr.get(l) == value && l+1 < arr.size() && arr.get(l+1) == value)
-                l++;
-            return l+1;
-        }
-        return arr.get(l) < value ? l+1 : l;
+        return arr.get(l) <= value ? l+1 : l;
     }
 
 
@@ -470,101 +397,81 @@ public class CP {
 
     // Integer
     private static int nextInt() throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         return Integer.parseInt(tkn.nextToken());
     }
 
     private static int[] nextInts(int n) throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         int[] ans = new int[n];
-        for (int i = 0; i < n; i++)
-            ans[i] = Integer.parseInt(tkn.nextToken());
+        for (int i = 0; i < n; i++) ans[i] = Integer.parseInt(tkn.nextToken());
         return ans;
     }
 
     private static List<Integer> nextIntList(int n) throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         List<Integer> ans = new ArrayList<>(n);
-        for (int i = 0; i < n; i++)
-            ans.add(Integer.parseInt(tkn.nextToken()));
+        for (int i = 0; i < n; i++) ans.add(Integer.parseInt(tkn.nextToken()));
         return ans;
     }
 
     // Long
     private static long nextLong() throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         return Long.parseLong(tkn.nextToken());
     }
 
     private static long[] nextLongs(int n) throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         long[] ans = new long[n];
-        for (int i = 0; i < n; i++)
-            ans[i] = Long.parseLong(tkn.nextToken());
+        for (int i = 0; i < n; i++) ans[i] = Long.parseLong(tkn.nextToken());
         return ans;
     }
 
     private static List<Long> nextLongList(int n) throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         List<Long> ans = new ArrayList<>(n);
-        for (int i = 0; i < n; i++)
-            ans.add(Long.parseLong(tkn.nextToken()));
+        for (int i = 0; i < n; i++) ans.add(Long.parseLong(tkn.nextToken()));
         return ans;
     }
 
     // Double
     private static double nextDouble() throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         return Double.parseDouble(tkn.nextToken());
     }
 
     private static double[] nextDouble(int n) throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         double[] ans = new double[n];
-        for (int i = 0; i < n; i++)
-            ans[i] = Double.parseDouble(tkn.nextToken());
+        for (int i = 0; i < n; i++) ans[i] = Double.parseDouble(tkn.nextToken());
         return ans;
     }
 
     private static List<Double> nextDoubleList(int n) throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         List<Double> ans = new ArrayList<>(n);
-        for (int i = 0; i < n; i++)
-            ans.add(Double.parseDouble(tkn.nextToken()));
+        for (int i = 0; i < n; i++) ans.add(Double.parseDouble(tkn.nextToken()));
         return ans;
     }
 
     // String
     private static String nextString() throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         return tkn.nextToken();
     }
 
     private static String[] nextStrings(int n) throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         String[] ans = new String[n];
-        for (int i = 0; i < n; i++)
-            ans[i] = tkn.nextToken();
+        for (int i = 0; i < n; i++) ans[i] = tkn.nextToken();
         return ans;
     }
 
     private static List<String> nextStringList(int n) throws Exception {
-        while (!tkn.hasMoreTokens())
-            tkn = new StringTokenizer(rd.readLine());
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         List<String> ans = new ArrayList<>(n);
-        for (int i = 0; i < n; i++)
-            ans.add(tkn.nextToken());
+        for (int i = 0; i < n; i++) ans.add(tkn.nextToken());
         return ans;
     }
 

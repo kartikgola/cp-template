@@ -1,7 +1,7 @@
 # cp-template
 Competitive Programming Java Coding Template
 
-### VS Code Setup -
+### 🛠️ VS Code Setup 🛠️
 1. Open repo in VS Code
 2. Install these 2 extensions -
     1. https://marketplace.visualstudio.com/items?itemName=redhat.java
@@ -10,7 +10,7 @@ Competitive Programming Java Coding Template
 4. Type input in `input.txt`
 5. See the output in `output.txt`
 
-### Sublime Text Setup -
+### 🛠️ Sublime Text Setup 🛠️
 1. Open repo in Sublime Text & open `CPTemplate.java`
 1. Go to Tools > Build System > New Build System...
 2. In the newly opened file, paste the below JSON and save the file with name "Java Build+Run"
@@ -28,7 +28,7 @@ Competitive Programming Java Coding Template
 6. See the output in `output.txt`
 
 
-### Template Features - 
+### 🌟 Template Features 🌟
 1. Array Utilities
     - Sorted Array Bisection (left/right, like Python's bisect) (int[] & List<Integer> support only)
 

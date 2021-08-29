@@ -16,7 +16,7 @@ public class CPTemplate {
         setIO();
         int t = nextInt();
         while (t-- > 0) {
-            System.out.println("Hello world!");
+            println(Arrays.asList(1, 2));
         }
     }
 
@@ -29,45 +29,6 @@ public class CPTemplate {
             this.value = value;
         }
     }
-
-
-    /* -----------------------------String Utilities--------------------------- */
-    private static boolean isPalindrome(String s) { return isPalindrome(s, 0, s.length()-1); }
-
-    private static boolean isPalindrome(String s, int start, int end) {
-        for (int i = start, j = end; i < j; ++i, --j)
-            if (s.charAt(i) != s.charAt(j))
-                return false;
-        return true;
-    }
-
-
-    /* -----------------------------Math Utilities----------------------------- */
-    // Returns seive of prime numbers upto (not including) the given number
-    private static boolean[] primeNumbersSeive(int number) {
-        boolean[] seive = new boolean[number];
-        if ( number > 2 ) {
-            for ( int num = 2; num * num <= number - 1; ++num ) {
-                if ( !seive[num] ) {
-                    for ( int mult = num * 2; mult < seive.length; mult += num ) {
-                        seive[mult] = true;
-                    }
-                }
-            }
-        }
-        return seive;
-    }
-
-    private static boolean isPalindrome(long number) {
-        String str = Long.toString(number);
-        for (int i = 0, j = str.length() - 1; i <= j; ++i, --j)
-            if (str.charAt(i) != str.charAt(j)) return false;
-        return true;
-    }
-
-    private static long gcd(long a, long b) { return a == 0 ? b : gcd(b % a, a); }
-
-    private static long gcd(int a, int b) { return a == 0 ? b : gcd(b % a, a); }
 
 
     /* -----------------------------Graph Utilities---------------------------- */
@@ -150,175 +111,6 @@ public class CPTemplate {
                 adj.get(to).put(from, weight);
                 edges.add(new int[]{to, from, weight});
             }
-        }
-
-        private boolean isCyclic(int u, boolean[] visited, boolean[] path) {
-            if (!visited[u]) {
-                visited[u] = true;
-                path[u] = true;
-                for (int v: adj.get(u).keySet()) {
-                    if (!visited[v]) {
-                        if (isCyclic(v, visited, path))
-                            return true;
-                    } else if (path[v])
-                        return true;
-                }
-            }
-            path[u] = false;
-            return false;
-        }
-        public boolean isCyclic() {
-            boolean[] visited = new boolean[size];
-            boolean[] path = new boolean[size];
-            for (int u = 0; u < size; ++u) {
-                if (!visited[u] && isCyclic(u, visited, path)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public boolean isTree() {
-            boolean[] visited = new boolean[size];
-            boolean[] path = new boolean[size];
-            if (isCyclic(0, visited, path))
-                return false;
-            for (boolean vis: visited)
-                if (!vis) return false;
-            return true;
-        }
-
-        public int[] topologicalSort() {
-            int[] indegree = new int[size];
-            int[] ans = new int[size];
-            boolean[] visited = new boolean[size];
-            Queue<Integer> q = new LinkedList<>();
-            adj.values().stream().map(Map::keySet).flatMap(Collection::stream).forEach(u -> indegree[u]++);
-            for (int u = 0; u < size; u++) {
-                if (indegree[u] == 0) {
-                    q.add(u);
-                }
-            }
-            int j = 0;
-            while (!q.isEmpty()) {
-                int u = q.poll();
-                ans[j++] = u;
-                for (int v: adj.get(u).keySet()) {
-                    if (!visited[v] && --indegree[v] == 0) {
-                        q.add(v);
-                        visited[v] = true;
-                    }
-                }
-            }
-            if (j < size)
-                return new int[]{};
-            return ans;
-        }
-
-        public int[] dijkstra(int source) {
-            int[] dist = new int[size];
-            boolean[] visited = new boolean[size];
-            Arrays.fill(dist, Integer.MAX_VALUE);
-            dist[source] = 0;
-            Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(v -> v[0]));
-            pq.add(new int[]{0, source});
-
-            while (!pq.isEmpty()) {
-                int d = pq.peek()[0],
-                        u = pq.poll()[1];
-                if (visited[u])
-                    continue;
-                visited[u] = true;
-                for (Map.Entry<Integer, Integer> e: adj.get(u).entrySet()) {
-                    int v = e.getKey(),
-                            w = e.getValue();
-                    if (d + w < dist[v]) {
-                        dist[v] = d + w;
-                        pq.add(new int[]{dist[v], v});
-                    }
-                }
-            }
-
-            return dist;
-        }
-
-        public int[] bellmanFord(int source) {
-            int[] dist = new int[size];
-            Arrays.fill(dist, Integer.MAX_VALUE);
-            dist[source] = 0;
-            for (int i = 0; i < size-1; ++i) {
-                for (int[] edge: edges) {
-                    int from = edge[0], to = edge[1], weight = edge[2];
-                    if (dist[from] != Integer.MAX_VALUE && dist[from] + weight < dist[to]) {
-                        dist[to] = dist[from] + weight;
-                    }
-                }
-            }
-            for (int[] edge: edges) {
-                int from = edge[0], to = edge[1], weight = edge[2];
-                if (dist[from] != Integer.MAX_VALUE && dist[from] + weight < dist[to]) {
-                    // Graph has -ve weight cycle
-                    return new int[]{};
-                }
-            }
-            return dist;
-        }
-
-        public int[][] floydWarshall() {
-            int[][] dist = new int[size][size];
-            for (int u = 0; u < size; ++u) {
-                Arrays.fill(dist[u], Integer.MAX_VALUE);
-                dist[u][u] = 0;
-                for (Map.Entry<Integer, Integer> e: adj.get(u).entrySet()) {
-                    dist[u][e.getKey()] = e.getValue();
-                }
-            }
-            for (int k = 0; k < size; ++k) {
-                for (int u = 0; u < size; ++u) {
-                    for (int v = 0; v < size; ++v) {
-                        if (dist[u][k] != Integer.MAX_VALUE && dist[k][v] != Integer.MAX_VALUE
-                                && dist[u][k] + dist[k][v] < dist[u][v]) {
-                            dist[u][v] = dist[u][k] + dist[k][v];
-                        }
-                    }
-                }
-            }
-            return dist;
-        }
-
-        public IntGraph kruskal() {
-            IntGraph mst = new IntGraph(size, isDirected);
-            edges.sort(Comparator.comparingInt(e -> e[2]));
-            UnionFind uf = new UnionFind(size);
-            for (int[] edge: edges) {
-                if (uf.union(edge[0], edge[2])) {
-                    mst.addEdge(edge);
-                }
-            }
-            return mst;
-        }
-
-        public IntGraph prim() {
-            boolean[] visited = new boolean[size];
-            Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(e -> e[2]));
-            IntGraph mst = new IntGraph(size, isDirected);
-            int randomSource = new Random().nextInt(size);
-            for (Map.Entry<Integer, Integer> edge: adj.get(randomSource).entrySet())
-                pq.add(new int[]{randomSource, edge.getKey(), edge.getValue()});
-            visited[randomSource] = true;
-
-            while (!pq.isEmpty()) {
-                int u = pq.peek()[0],
-                        v = pq.peek()[1],
-                        w = pq.poll()[2];
-                if (visited[v])
-                    continue;
-                visited[v] = true;
-                mst.addEdge(new int[]{u, v, w});
-                for (Map.Entry<Integer, Integer> edge: adj.get(v).entrySet())
-                    pq.add(new int[]{v, edge.getKey(), edge.getValue()});
-            }
-            return mst;
         }
     }
 
@@ -474,5 +266,10 @@ public class CPTemplate {
         for (int i = 0; i < n; i++) ans.add(tkn.nextToken());
         return ans;
     }
+
+    // Printing
+    private static void println(Object o) { System.out.println(o); }
+
+    private static void print(Object o) { System.out.print(o); }
 
 }

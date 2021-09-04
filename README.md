@@ -30,7 +30,10 @@ Competitive Programming Java Coding Template
 
 ### 🌟 Template Features 🌟
 1. Array Utilities
-    - Sorted Array Bisection (left/right, like Python's bisect) (int[] & List<Integer> support only)
+    - Sorted Array Left/Right Bisection (like Python's bisect)
+        - [x] int[]
+        - [x] T[]
+        - [x] List<T>
 
 2. IO Utilities
     - "ONLINE_JUDGE" (env. variable) support. Supported platforms:
@@ -38,24 +41,18 @@ Competitive Programming Java Coding Template
         - [x] CodeForces
         - [x] CodeChef
         - [ ] AtCoder
-    - Reading int/Integer, long/Long, double/Double, String
-    - Reading int[]/List<Integer>, long[]/List<Long>, double[]/List<Double>, String[]/List<String>
+    - Reading array input
+        - [x] int[], List<Integer>
+        - [x] long[], List<Long>
+        - [x] double[], List<Double>
+        - [x] String[], List<String>
+    - Printing
 
 3. Graph Utilities
     - UnionFind
-    - Integer-based Graph (Directed+Undirected). Supported algorithms:
-        - Djikstra
-        - Prim
-        - Kruskal
-        - Cycle Detection
-        - Tree Detection
-        - Topological Sort
-        - Floyd Warshall
-        - Bellman Ford
+    - int-based Graph
+        - [x] Directed
+        - [x] Un-directed
 
-4. Math Utilities
-    - Prime numbers seive
-    - GCD
-
-5. Common Utilities
+3. Misc Utilities
     - Pair<K, T>

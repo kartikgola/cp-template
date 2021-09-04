@@ -16,7 +16,7 @@ public class CPTemplate {
         setIO();
         int t = nextInt();
         while (t-- > 0) {
-            println(Arrays.asList(1, 2));
+            println("Hello, world!");
         }
     }
 

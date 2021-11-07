@@ -36,23 +36,16 @@ Competitive Programming Java Coding Template
         - [x] List<T>
 
 2. IO Utilities
-    - "ONLINE_JUDGE" (env. variable) support. Supported platforms:
-        - [x] LeetCode
-        - [x] CodeForces
-        - [x] CodeChef
-        - [ ] AtCoder
+    - "ONLINE_JUDGE" (env. variable) support
     - Reading array input
         - [x] int[], List<Integer>
         - [x] long[], List<Long>
         - [x] double[], List<Double>
         - [x] String[], List<String>
-    - Printing
+    - Printing with print/println
 
 3. Graph Utilities
     - UnionFind
-    - int-based Graph
-        - [x] Directed
-        - [x] Un-directed
 
 3. Misc Utilities
     - Pair<K, T>

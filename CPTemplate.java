@@ -12,8 +12,7 @@ import java.lang.*;
 public class CPTemplate {
 
     public static void main(String[] args) throws Exception {
-        // Comment setIO(); if using AtCoder
-        setIO();
+        setIO(); // comment if OJ doesn't support ONLINE_JUDGE property
         int t = nextInt();
         while (t-- > 0) {
             println("Hello, world!");
@@ -31,27 +30,21 @@ public class CPTemplate {
     }
 
 
-    /* -----------------------------Graph Utilities---------------------------- */
+    /* -----------------------------Union-Find Utilities---------------------- */
     private static class UnionFind {
 
         private int groups;
         private final int[] parent;
-        private boolean zeroIndexed = true;
-
+    
         public UnionFind(int size) {
             groups = size;
             parent = new int[size];
             Arrays.fill(parent, -1);
         }
-
+    
         public UnionFind(int size, boolean zeroIndexed) {
-            groups = size;
-            if (zeroIndexed)
-                parent = new int[size];
-            else
-                parent = new int[size+1];
-            Arrays.fill(parent, -1);
-            this.zeroIndexed = zeroIndexed;
+            this(zeroIndexed ? size : size+1);
+            if (!zeroIndexed) groups--;
         }
 
         public int getTotalGroups() {
@@ -68,49 +61,17 @@ public class CPTemplate {
             int pu = find(u);
             int pv = find(v);
             if ( pu != pv ) {
-                // Weight of pu is more (more negative means higher weight)
                 if ( parent[pu] <= parent[pv] ) {
+                    parent[pu] += parent[pv];
                     parent[pv] = pu;
-                    parent[pu]--;
                 } else {
+                    parent[pv] += parent[pu];
                     parent[pu] = pv;
-                    parent[pv]--;
                 }
                 groups--;
                 return true;
             }
-            // In case parents of 'u' and 'v' are same, we return false
             return false;
-        }
-    }
-
-    private static class IntGraph {
-        public final Map<Integer, Map<Integer, Integer>> adj = new HashMap<>();
-        public List<int[]> edges;
-        public final int size;
-        public final boolean isDirected;
-        public IntGraph(int size, boolean isDirected) {
-            this.size = size;
-            this.isDirected = isDirected;
-            this.edges = new ArrayList<>(size);
-            for (int u = 0; u < size; ++u)
-                adj.put(u, new HashMap<>());
-        }
-        public IntGraph(int size, boolean isDirected, int[][] edges) {
-            this(size, isDirected);
-            for (int[] edge: edges)
-                addEdge(edge);
-        }
-        public void addEdge(int[] edge) {
-            int from = edge[0],
-                    to = edge[1],
-                    weight = edge.length == 3 ? edge[2] : 0;
-            adj.get(from).put(to, weight);
-            edges.add(new int[]{from, to, weight});
-            if (!isDirected) {
-                adj.get(to).put(from, weight);
-                edges.add(new int[]{to, from, weight});
-            }
         }
     }
 
@@ -233,11 +194,9 @@ public class CPTemplate {
 
     /* -----------------------------IO Utilities----------------------------- */
     private static BufferedReader rd = new BufferedReader(new InputStreamReader(System.in));
-    private static StringTokenizer tkn = new StringTokenizer("");
+    private static StringTokenizer tkn = new StringTokenizer();
 
     // "ONLINE_JUDGE" property
-    // works on LeetCode, CodeForces, CodeChef
-    // does not work on AtCoder
     private static void setIO() throws Exception {
         if (System.getProperty("ONLINE_JUDGE") == null) {
             rd = new BufferedReader(new FileReader("input.txt"));
@@ -245,83 +204,87 @@ public class CPTemplate {
         }
     }
 
+    private static void readTokens() throws Exception {
+        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
+    }
+
     // Integer
     private static int nextInt() throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
+        readTokens();
         return Integer.parseInt(tkn.nextToken());
     }
 
     private static int[] nextInts(int n) throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         int[] ans = new int[n];
-        for (int i = 0; i < n; i++) ans[i] = Integer.parseInt(tkn.nextToken());
+        for (int i = 0; i < n; ++i)
+            ans[i] = nextInt();
         return ans;
     }
 
     private static List<Integer> nextIntList(int n) throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         List<Integer> ans = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) ans.add(Integer.parseInt(tkn.nextToken()));
+        for (int i = 0; i < n; i++)
+            ans.add(nextInt());
         return ans;
     }
 
     // Long
     private static long nextLong() throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
+        readTokens();
         return Long.parseLong(tkn.nextToken());
     }
 
     private static long[] nextLongs(int n) throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         long[] ans = new long[n];
-        for (int i = 0; i < n; i++) ans[i] = Long.parseLong(tkn.nextToken());
+        for (int i = 0; i < n; i++)
+            ans[i] = nextLong();
         return ans;
     }
 
     private static List<Long> nextLongList(int n) throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         List<Long> ans = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) ans.add(Long.parseLong(tkn.nextToken()));
+        for (int i = 0; i < n; i++)
+            ans.add(nextLong());
         return ans;
     }
 
     // Double
     private static double nextDouble() throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
+        readTokens();
         return Double.parseDouble(tkn.nextToken());
     }
 
     private static double[] nextDouble(int n) throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         double[] ans = new double[n];
-        for (int i = 0; i < n; i++) ans[i] = Double.parseDouble(tkn.nextToken());
+        for (int i = 0; i < n; i++)
+            ans[i] = nextDouble();
         return ans;
     }
 
     private static List<Double> nextDoubleList(int n) throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         List<Double> ans = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) ans.add(Double.parseDouble(tkn.nextToken()));
+        for (int i = 0; i < n; i++) 
+            ans.add(nextDouble());
         return ans;
     }
 
     // String
     private static String nextString() throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
+        readTokens();
         return tkn.nextToken();
     }
 
     private static String[] nextStrings(int n) throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         String[] ans = new String[n];
-        for (int i = 0; i < n; i++) ans[i] = tkn.nextToken();
+        for (int i = 0; i < n; i++) 
+            ans[i] = nextString();
         return ans;
     }
 
     private static List<String> nextStringList(int n) throws Exception {
-        while (!tkn.hasMoreTokens()) tkn = new StringTokenizer(rd.readLine());
         List<String> ans = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) ans.add(tkn.nextToken());
+        for (int i = 0; i < n; i++) 
+            ans.add(nextString());
         return ans;
     }
 
